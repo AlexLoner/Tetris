@@ -77,6 +77,9 @@ class Figure:
         
         coef_x = self.check_sides(surface, shift_x)
         coef_y = self.check_bottom(surface, shift_y)
+        if coef_y == 0:
+            shift_y /= sts.speed_coef
+            coef_y = self.check_bottom(surface, shift_y)
 
         for block in self.blocks:
             block.move(coef_x * shift_x, coef_y * shift_y)
