@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 import settings as sts
 
 
@@ -64,6 +65,9 @@ class Figure:
         return all([block.check_bottom(surface, shift) for block in self.blocks])
     
     def move(self, surface):
+        if not self.active:
+            return
+        
         shift_x = 0
         shift_y = sts.step_down
         if self.moving_left:
@@ -78,9 +82,15 @@ class Figure:
 
         for block in self.blocks:
             block.move(coef_x * shift_x, coef_y * shift_y)
+        self.x += coef_x * shift_x
+        self.y += coef_y * shift_y
         if coef_y == 0:
             self.active = False
 
+    def rotate(self):
+        self.type = np.rot90(self.type)
+        self.blocks.clear()
+        self.create_figure_shape()
 
     def draw(self, surface):
         for block in self.blocks:
