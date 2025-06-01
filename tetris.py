@@ -48,19 +48,20 @@ class Tetris:
             elif event.type == pygame.KEYUP:
                 self.key_up_events(event)
                 
-    def create_figure(self):
+    def create_figure(self, surface):
         figure_type = np.random.randint(low=0, high=len(sts.shapes))
-        self.active_figure = Figure(x=sts.pz_pos[0], y=sts.pz_pos[1], figure_type=figure_type)
+        rect = self.pz_screen.get_rect()
+        self.active_figure = Figure(x=rect.centerx, y=rect.top, figure_type=figure_type)
 
     def update_screen(self):
         self.screen.fill(sts.bg_color)
         self.pz_screen.fill(sts.pz_bg_color)
-        self.active_figure.draw(self.screen)
+        self.active_figure.draw(self.pz_screen)
         self.draw_inactive_block()
         pygame.display.flip()
     
     def add_inactive_blocks(self, blocks):
-        for block in blocks:
+        for block in blocks[:]:
             block.color = sts.inactive_color
             self.blocks.append(block)
 
@@ -71,10 +72,10 @@ class Tetris:
     def start_game(self):
         while self.run_game:
             if self.active_figure is None:
-                self.create_figure()
+                self.create_figure(self.pz_screen)
             elif not self.active_figure.active:
                 self.add_inactive_blocks(self.active_figure.blocks)
-                self.create_figure()
+                self.create_figure(self.pz_screen)
             self.handle_events()
             self.active_figure.move(surface=self.pz_screen)
             self.update_screen()

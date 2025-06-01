@@ -20,15 +20,13 @@ class Block:
     
     def check_sides(self, surface, shift_x): 
         rect = surface.get_rect()
-        offset_x, _ = surface.get_offset()
-        right_border = self.x + sts.cell_size + shift_x <= rect.right + offset_x
-        left_border = self.x + shift_x >= offset_x
+        right_border = self.x + sts.cell_size + shift_x <= rect.right
+        left_border = self.x + shift_x >= rect.left
         return left_border * right_border
 
     def check_bottom(self, surface, shift_y):
         rect = surface.get_rect()
-        _, offset_y = surface.get_offset()
-        bottom_border = self.y + shift_y + sts.cell_size <= rect.bottom + offset_y
+        bottom_border = self.y + shift_y + sts.cell_size <= rect.bottom
         return bottom_border
 
 

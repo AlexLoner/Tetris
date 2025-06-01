@@ -14,8 +14,8 @@ pz_bg_color = (255, 255, 255)
 
 # Block
 cell_size = 20
-step_down = 5
-step_side = 10
+step_down = 10
+step_side = 20
 
 # Game
 speed_coef = 2
