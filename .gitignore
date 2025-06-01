@@ -5,3 +5,4 @@ dist/
 old_code/
 plan.md
 base_version.py
+**/*._*
