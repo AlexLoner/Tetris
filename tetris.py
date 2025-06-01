@@ -51,7 +51,7 @@ class Tetris:
     def create_figure(self, surface):
         figure_type = np.random.randint(low=0, high=len(sts.shapes))
         rect = self.pz_screen.get_rect()
-        self.active_figure = Figure(x=rect.centerx, y=rect.top, figure_type=figure_type)
+        self.active_figure = Figure(x=rect.centerx, y=rect.top - 2*sts.cell_size, figure_type=figure_type)
 
     def update_screen(self):
         self.screen.fill(sts.bg_color)
@@ -68,7 +68,7 @@ class Tetris:
     def draw_inactive_block(self):
         for block in self.blocks:
             block.draw(self.pz_screen)
-        
+
     def start_game(self):
         while self.run_game:
             if self.active_figure is None:
