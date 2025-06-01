@@ -1,0 +1,7 @@
+**/*__pycache__
+.vscode
+data/
+dist/
+old_code/
+plan.md
+base_version.py
