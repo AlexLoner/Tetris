@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 import settings as sts
 
 
@@ -19,15 +20,13 @@ class Block:
     
     def check_sides(self, surface, shift_x): 
         rect = surface.get_rect()
-        offset_x, _ = surface.get_offset()
-        right_border = self.x + sts.cell_size + shift_x <= rect.right + offset_x
-        left_border = self.x + shift_x >= offset_x
+        right_border = self.x + sts.cell_size + shift_x <= rect.right
+        left_border = self.x + shift_x >= rect.left
         return left_border * right_border
 
     def check_bottom(self, surface, shift_y):
         rect = surface.get_rect()
-        _, offset_y = surface.get_offset()
-        bottom_border = self.y + shift_y + sts.cell_size <= rect.bottom + offset_y
+        bottom_border = self.y + shift_y + sts.cell_size <= rect.bottom
         return bottom_border
 
 
@@ -64,6 +63,9 @@ class Figure:
         return all([block.check_bottom(surface, shift) for block in self.blocks])
     
     def move(self, surface):
+        if not self.active:
+            return
+        
         shift_x = 0
         shift_y = sts.step_down
         if self.moving_left:
@@ -75,12 +77,21 @@ class Figure:
         
         coef_x = self.check_sides(surface, shift_x)
         coef_y = self.check_bottom(surface, shift_y)
+        if coef_y == 0:
+            shift_y /= sts.speed_coef
+            coef_y = self.check_bottom(surface, shift_y)
 
         for block in self.blocks:
             block.move(coef_x * shift_x, coef_y * shift_y)
+        self.x += coef_x * shift_x
+        self.y += coef_y * shift_y
         if coef_y == 0:
             self.active = False
 
+    def rotate(self):
+        self.type = np.rot90(self.type)
+        self.blocks.clear()
+        self.create_figure_shape()
 
     def draw(self, surface):
         for block in self.blocks:
