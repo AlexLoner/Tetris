@@ -6,18 +6,23 @@ import settings as sts
 class Block:
 
     def __init__(self, x, y, color):
-        self.x = x
-        self.y = y
         self.color = color
+        self.rect = pygame.Rect(x, y, sts.cell_size, sts.cell_size)
 
+    @property
+    def x(self):
+        return self.rect.x
+    
+    @property
+    def y(self):
+        return self.rect.y
+    
     def draw(self, surface):
-        rect = pygame.Rect(self.x, self.y, sts.cell_size, sts.cell_size)
-        pygame.draw.rect(surface, self.color, rect)
+        pygame.draw.rect(surface, self.color, self.rect)
 
     def move(self, dx, dy):
-        self.x += dx 
-        self.y += dy
-    
+        self.rect.move_ip(dx, dy)
+        
     def check_sides(self, surface, shift_x): 
         rect = surface.get_rect()
         right_border = self.x + sts.cell_size + shift_x <= rect.right
@@ -28,7 +33,9 @@ class Block:
         rect = surface.get_rect()
         bottom_border = self.y + shift_y + sts.cell_size <= rect.bottom
         return bottom_border
-
+    
+    # def check_collisions(self, shift_x, shift_y, inactive_blocks):
+    #     pygame.sprite.collide_rect(self, inactive_blocks)
 
 class Figure:
 
@@ -77,6 +84,8 @@ class Figure:
         
         coef_x = self.check_sides(surface, shift_x)
         coef_y = self.check_bottom(surface, shift_y)
+        
+        # Спускаемся на недостающий участок, чтобы фигура всегда прижималась к низу 
         if coef_y == 0:
             shift_y /= sts.speed_coef
             coef_y = self.check_bottom(surface, shift_y)

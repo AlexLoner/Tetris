@@ -27,9 +27,10 @@ class Tetris:
             self.active_figure.moving_down = True
         elif event.key == pygame.K_SPACE:
             self.active_figure.rotate()
+            # Сдвигаем фигуру до тех пор пока она не влезет в игровое поле в перевернутом виде
             while not self.active_figure.check_sides(self.pz_screen, 0):
                 for block in self.active_figure.blocks:
-                    block.x -= sts.step_side
+                    block.move(-sts.step_side, 0)
 
     def key_up_events(self, event):
         if event.key == pygame.K_LEFT or event.key == pygame.K_a:
