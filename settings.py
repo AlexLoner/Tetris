@@ -2,24 +2,25 @@ import numpy as np
 
 
 # Screen 
-screen_width = 1000
-screen_height = 700
+screen_width = 800
+screen_height = 1000
 bg_color = (66, 158, 245)
 
 # Play Zone
-pz_width = 400
-pz_height = 600
+pz_width = 40 * 12
+pz_height = 800
 pz_pos = ((screen_width - pz_width) // 2, (screen_height - pz_height) // 2)
 pz_bg_color = (255, 255, 255)
 
 # Block
-cell_size = 20
-step_down = 10
-step_side = 20
+cell_size = 40
+step_down = 2
+step_side = 40
+bottom_correction = 1
 
 # Game
-speed_coef = 2
-framerate = 5
+speed_coef = 5
+framerate = 20
 
 # Colors
 inactive_color = (169, 169, 169)
