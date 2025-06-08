@@ -14,12 +14,13 @@ pz_bg_color = (255, 255, 255)
 
 # Block
 cell_size = 40
-step_down = 5
-step_side = 20
+step_down = 2
+step_side = 40
+bottom_correction = 1
 
 # Game
-speed_coef = 2
-framerate = 10
+speed_coef = 5
+framerate = 20
 
 # Colors
 inactive_color = (169, 169, 169)
