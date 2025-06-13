@@ -7,9 +7,9 @@ screen_height = 1000
 bg_color = (66, 158, 245)
 
 # Play Zone
-pz_width = 40 * 12
-pz_height = 800
-pz_pos = ((screen_width - pz_width) // 2, (screen_height - pz_height) // 2)
+# pz_width = 40 * 12
+# pz_height = 800
+# pz_pos = ((screen_width - pz_width) // 2, (screen_height - pz_height) // 2)
 pz_bg_color = (255, 255, 255)
 
 # Block
@@ -17,6 +17,15 @@ cell_size = 40
 step_down = 2
 step_side = 40
 bottom_correction = 1
+
+# Play Zone
+cols = 12
+rows = 20
+pz_width = cell_size * cols
+pz_height = cell_size * rows
+pz_pos = ((screen_width - pz_width) // 2, (screen_height - pz_height) // 2)
+pz_bg_color = (255, 255, 255)
+
 
 # Game
 speed_coef = 5
