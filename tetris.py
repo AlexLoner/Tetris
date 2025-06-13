@@ -2,6 +2,8 @@ import pygame
 import numpy as np
 import settings as sts
 from block import Figure
+from board import GameBoard
+
 
 class Tetris:
     """Класс для управления рерсами и поведением игры"""
@@ -13,6 +15,7 @@ class Tetris:
         pygame.display.set_caption("Тетрис Демо")
         self.active_figure = None
         self.inactive_blocks = []
+        self.game_board = GameBoard()
         self.run_game = True
         self.clock = pygame.time.Clock()
     
@@ -60,6 +63,7 @@ class Tetris:
     def add_inactive_blocks(self, blocks):
         for block in blocks[:]:
             block.color = sts.inactive_color
+            self.game_board.add_block(block)
             self.inactive_blocks.append(block)
 
     def draw_inactive_block(self):
@@ -72,6 +76,7 @@ class Tetris:
                 self.create_figure(self.pz_screen)
             elif not self.active_figure.active:
                 self.add_inactive_blocks(self.active_figure.blocks)
+                self.game_board.clean_lines(self.inactive_blocks)
                 self.create_figure(self.pz_screen)
             self.handle_events()
             self.active_figure.move(
