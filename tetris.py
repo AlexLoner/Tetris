@@ -10,7 +10,7 @@ class Tetris:
 
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((sts.screen_width, sts.screen_height))
+        self.screen = pygame.display.set_mode((sts.screen_width, sts.screen_height), pygame.FULLSCREEN)
         self.pz_screen = self.screen.subsurface((*sts.pz_pos, sts.pz_width, sts.pz_height))
         pygame.display.set_caption("Тетрис Демо")
         self.active_figure = None
@@ -70,11 +70,17 @@ class Tetris:
         for block in self.inactive_blocks:
             block.draw(self.pz_screen)
 
+    def end_game(self, blocks):
+        return any([block.rect.top < 0 for block in blocks])
+
     def start_game(self):
         while self.run_game:
             if self.active_figure is None:
                 self.create_figure(self.pz_screen)
             elif not self.active_figure.active:
+                if self.end_game(self.active_figure.blocks):
+                    self.run_game = False
+
                 self.add_inactive_blocks(self.active_figure.blocks)
                 self.game_board.clean_lines(self.inactive_blocks)
                 self.create_figure(self.pz_screen)
