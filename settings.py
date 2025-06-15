@@ -1,26 +1,23 @@
 import numpy as np
+import pygame 
 
 
-# Screen 
-screen_width = 800
+cols = 12
+rows = 20
+
+
+# Screen
 screen_height = 1000
+screen_width = cols * 70
 bg_color = (66, 158, 245)
 
-# Play Zone
-# pz_width = 40 * 12
-# pz_height = 800
-# pz_pos = ((screen_width - pz_width) // 2, (screen_height - pz_height) // 2)
-pz_bg_color = (255, 255, 255)
-
 # Block
-cell_size = 40
+cell_size = screen_width // 20
 step_down = 2
-step_side = 40
+step_side = screen_width // 20
 bottom_correction = 1
 
 # Play Zone
-cols = 12
-rows = 20
 pz_width = cell_size * cols
 pz_height = cell_size * rows
 pz_pos = ((screen_width - pz_width) // 2, (screen_height - pz_height) // 2)
@@ -29,7 +26,8 @@ pz_bg_color = (255, 255, 255)
 
 # Game
 speed_coef = 5
-framerate = 20
+framerate = 40
+lines_to_increse_level = 4
 
 # Colors
 inactive_color = (169, 169, 169)
@@ -65,3 +63,7 @@ shapes = [
     np.array([[1, 1, 0],
               [0, 1, 1]])       # Z
 ]
+
+# ScoreBoard 
+text_size = 48
+text_color = (0, 0, 0)
