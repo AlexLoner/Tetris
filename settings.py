@@ -1,4 +1,5 @@
 import numpy as np
+import pygame 
 
 
 cols = 12
@@ -26,6 +27,7 @@ pz_bg_color = (255, 255, 255)
 # Game
 speed_coef = 5
 framerate = 40
+lines_to_increse_level = 4
 
 # Colors
 inactive_color = (169, 169, 169)
@@ -61,3 +63,7 @@ shapes = [
     np.array([[1, 1, 0],
               [0, 1, 1]])       # Z
 ]
+
+# ScoreBoard 
+text_size = 48
+text_color = (0, 0, 0)

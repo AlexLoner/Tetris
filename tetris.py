@@ -3,22 +3,24 @@ import numpy as np
 import settings as sts
 from block import Figure
 from board import GameBoard
+from scoreboard import ScoreBoard
 
 
 class Tetris:
-    """Класс для управления рерсами и поведением игры"""
+    """Класс для управления ресурсами и поведением игры"""
 
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((sts.screen_width, sts.screen_height), pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((sts.screen_width, sts.screen_height))
         self.pz_screen = self.screen.subsurface((*sts.pz_pos, sts.pz_width, sts.pz_height))
         pygame.display.set_caption("Тетрис Демо")
         self.active_figure = None
         self.inactive_blocks = []
         self.game_board = GameBoard()
+        self.score_board = ScoreBoard(self.screen)
         self.run_game = True
         self.clock = pygame.time.Clock()
-    
+
     def key_down_events(self, event):
         if event.key == pygame.K_ESCAPE:
             self.run_game = False
@@ -48,7 +50,7 @@ class Tetris:
             elif event.type == pygame.KEYUP:
                 self.key_up_events(event)
                 
-    def create_figure(self, surface):
+    def create_figure(self):
         figure_type = np.random.randint(low=0, high=len(sts.shapes))
         rect = self.pz_screen.get_rect()
         self.active_figure = Figure(x=rect.centerx, y=rect.top - 2*sts.cell_size, figure_type=figure_type)
@@ -58,6 +60,7 @@ class Tetris:
         self.pz_screen.fill(sts.pz_bg_color)
         self.active_figure.draw(self.pz_screen)
         self.draw_inactive_block()
+        self.score_board.draw()
         pygame.display.flip()
     
     def add_inactive_blocks(self, blocks):
@@ -72,18 +75,19 @@ class Tetris:
 
     def end_game(self, blocks):
         return any([block.rect.top < 0 for block in blocks])
-
+    
     def start_game(self):
         while self.run_game:
             if self.active_figure is None:
-                self.create_figure(self.pz_screen)
+                self.create_figure()
             elif not self.active_figure.active:
                 if self.end_game(self.active_figure.blocks):
                     self.run_game = False
 
                 self.add_inactive_blocks(self.active_figure.blocks)
-                self.game_board.clean_lines(self.inactive_blocks)
-                self.create_figure(self.pz_screen)
+                num_burned_lines = self.game_board.clean_lines(self.inactive_blocks)
+                self.score_board.update_stats(num_burned_lines)
+                self.create_figure()
             self.handle_events()
             self.active_figure.move(
                 surface=self.pz_screen, 
